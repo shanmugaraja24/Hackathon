@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WildGuardians</title>
+
+  <link rel="stylesheet"  type="text/css" href="../static/style.css">
+<link rel="stylesheet" type="text/css" href="../static/animation.css">
+<link rel="stylesheet" type="text/css" href="../static/responsive.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/msgpack5@1.7.3/dist/msgpack.min.js"></script>
+
+</head>
+
+<body>
+
+  <section id="hero">
+
+    <div class="section-box">
+
+      <div class="content-wrap">
+        <header>
+          <a class="header-logo"><span>JUMBO</span>CODERZ</a>
+        </header>
+        <div class="hero-content">
+          <img src="{{ url_for('static', filename='images/45.png') }}" class="hero-img">
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section id="convert-section">
+    <div class="section-box">
+      <div class="content-wrap">
+        <h2 class="section-title" style="font-size: 24px; font-weight: bold; text-align: center;">JSON to MessagePack Conversion</h2>
+        
+        <!-- Encoding Options -->
+        <div style="text-align: center; margin: 10px 0;">
+          <label>
+            <input type="radio" name="encoding-type" value="normal" checked> Normal MessagePack
+          </label>
+          <label>
+            <input type="radio" name="encoding-type" value="binary"> MessagePack Binary
+          </label>
+        </div>
+
+        <div class="convert-container" style="display: flex; justify-content: space-between; gap: 20px; margin-top: 20px;">
+          <div class="json-section" style="flex: 1; display: flex; flex-direction: column;">
+            <h3 class="section-sub" style="font-size: 18px; font-weight: bold; margin-bottom: 10px; text-align: center;">JSON Input</h3>
+            <textarea id="json-input" placeholder="Paste your JSON here" style="width: 100%; height: 200px; padding: 10px; font-size: 16px; background-color: #ffffff; color: #333;"></textarea>
+          </div>
+
+          <div class="msgpack-section" style="flex: 1; display: flex; flex-direction: column;">
+            <h3 class="section-sub" style="font-size: 18px; font-weight: bold; margin-bottom: 10px; text-align: center;">MessagePack Output</h3>
+            <textarea id="msgpack-output" placeholder="MessagePack result will appear here" readonly style="width: 100%; height: 200px; padding: 10px; font-size: 16px; background-color: #ffffff; color: #333;"></textarea>
+          </div>
+        </div>
+
+        <button class="action-btn" id="convert-btn" style="display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Convert</button>
+
+        <div id="size-info" style="text-align: center; margin-top: 15px;">
+          <p id="before-size" style="margin: 5px 0; font-size: 16px;">Before Compression Size: 0 KB</p>
+          <p id="after-size" style="margin: 5px 0; font-size: 16px;">After Compression Size: 0 KB</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+
+  
+
+  
+  <section id="join-us">
+    <div class="section-box">
+
+      <div class="content-wrap">
+
+        <h4 class="section-title">TEAM MEMBERS</h4>
+
+        <div class="join-form">
+          <input type="text" class="input-1 i1" placeholder="Rajeswara Rao">
+          <input type="email" class="input-1 i2" placeholder="Shailesh Gamre">
+          <input type="text" class="input-1 i4" placeholder="Shanmugaraja">
+          <input type="text" class="input-1 i3" placeholder="Pokala Jayanth">
+          <input type="text" class="input-1 i4" placeholder="Chelliah Selvam">
+          <input type="text" class="input-1 i4" placeholder="Santhosh kumar">
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <script>
+    document.getElementById('convert-btn').addEventListener('click', function() {
+      const jsonInput = document.getElementById('json-input').value;
+      const encodingType = document.querySelector('input[name="encoding-type"]:checked').value;
+  
+      try {
+        const parsedJson = JSON.parse(jsonInput);
+
+        fetch('/convert', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ json: parsedJson, encoding_type: encodingType })
+        })
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('msgpack-output').value = data.msgpack;
+          document.getElementById('before-size').textContent = `Before Compression Size: ${data.before_size} KB`;
+          document.getElementById('after-size').textContent = `After Compression Size: ${data.after_size} KB`;
+        });
+      } catch (error) {
+        alert('Invalid JSON input!');
+      }
+    });
+  </script>
+</body>
+
+
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WildGuardians</title>
+
+  <link rel="stylesheet"  type="text/css" href="../static/style.css">
+<link rel="stylesheet" type="text/css" href="../static/animation.css">
+<link rel="stylesheet" type="text/css" href="../static/responsive.css">
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/msgpack5@1.7.3/dist/msgpack.min.js"></script>
+
+</head>
+
+<body>
+
+  <section id="hero">
+
+    <div class="section-box">
+
+      <div class="content-wrap">
+        <header>
+          <a class="header-logo"><span>JUMBO</span>CODERZ</a>
+        </header>
+        <div class="hero-content">
+          <img src="{{ url_for('static', filename='images/45.png') }}" class="hero-img">
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <section id="convert-section">
+    <div class="section-box">
+      <div class="content-wrap">
+        <h2 class="section-title" style="font-size: 24px; font-weight: bold; text-align: center;">JSON to MessagePack Conversion</h2>
+  
+        <div class="convert-container" style="display: flex; justify-content: space-between; gap: 20px; margin-top: 20px;">
+          <div class="json-section" style="flex: 1; display: flex; flex-direction: column;">
+            <h3 class="section-sub" style="font-size: 18px; font-weight: bold; margin-bottom: 10px; text-align: center;">JSON Input</h3>
+            <textarea id="json-input" placeholder="Paste your JSON here" style="width: 100%; height: 200px; padding: 10px; font-size: 16px; background-color: #ffffff; color: #333;"></textarea>
+          </div>
+  
+          <div class="msgpack-section" style="flex: 1; display: flex; flex-direction: column;">
+            <h3 class="section-sub" style="font-size: 18px; font-weight: bold; margin-bottom: 10px; text-align: center;">MessagePack Output</h3>
+            <textarea id="msgpack-output" placeholder="MessagePack result will appear here" readonly style="width: 100%; height: 200px; padding: 10px; font-size: 16px; background-color: #ffffff; color: #333;"></textarea>
+          </div>
+        </div>
+  
+        <button class="action-btn" id="convert-btn" style="display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Convert</button>
+  
+        <div id="size-info" style="text-align: center; margin-top: 15px;">
+          <p id="before-size" style="margin: 5px 0; font-size: 16px;">Before Compression Size: 0 KB</p>
+          <p id="after-size" style="margin: 5px 0; font-size: 16px;">After Compression Size: 0 KB</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+
+  
+
+  
+  <section id="join-us">
+    <div class="section-box">
+
+      <div class="content-wrap">
+
+        <h2 class="section-title">TEAM MEMBERS</h2>
+
+        <div class="join-form">
+          <input type="text" class="input-1 i1" placeholder="Rajeswara Rao">
+          <input type="email" class="input-1 i2" placeholder="Pokala Jayanth">
+          <input type="text" class="input-1 i3" placeholder="Shanmugaraja">
+          <input type="text" class="input-1 i4" placeholder="Shailesh Gamre">
+          <input type="text" class="input-1 i4" placeholder="Chelliah Selvam">
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <script>
+    document.getElementById('convert-btn').addEventListener('click', function() {
+      const jsonInput = document.getElementById('json-input').value;
+  
+      // Validate if input is JSON
+      try {
+        const parsedJson = JSON.parse(jsonInput);
+        // Send the JSON to the server for conversion (using Fetch API)
+        fetch('/convert', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ json: parsedJson }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Update the MessagePack output area
+          document.getElementById('msgpack-output').value = data.msgpack;
+  
+          // Update the size information
+          document.getElementById('before-size').textContent = `Before Compression Size: ${data.before_size} KB`;
+          document.getElementById('after-size').textContent = `After Compression Size: ${data.after_size} KB`;
+        });
+      } catch (error) {
+        alert('Invalid JSON input!');
+      }
+    });
+  </script>
+</body>
+
+
+</html> -->
